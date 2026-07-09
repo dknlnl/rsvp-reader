@@ -420,10 +420,18 @@
     const doc = new DOMParser().parseFromString(htmlString, "text/html");
     // remove script/style
     doc.querySelectorAll("script,style,noscript").forEach(n => n.remove());
-    // grab a chapter heading if present
-    let heading = "";
-    const h = doc.querySelector("h1,h2,h3,title");
-    if (h) heading = h.textContent.trim().replace(/\s+/g, " ");
+    // grab a chapter heading if present: prefer a real heading, fall back to
+    // <title>, skipping empty/whitespace-only elements at each step.
+    const firstNonEmpty = (nodes) => {
+      for (const n of nodes){
+        const t = n.textContent.trim().replace(/\s+/g, " ");
+        if (t) return t;
+      }
+      return "";
+    };
+    const heading =
+      firstNonEmpty(doc.querySelectorAll("h1,h2,h3")) ||
+      firstNonEmpty(doc.querySelectorAll("title"));
 
     // Walk the tree inserting separators at block-element boundaries so that
     // e.g. "<h1>Chapter One</h1><p>Hello world.</p>" doesn't collapse into
