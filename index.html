@@ -57,7 +57,7 @@
     appearance:none;border:1px solid var(--line);background:var(--bg-raised);color:var(--ink);
     padding:9px 16px;border-radius:8px;font-size:13.5px;cursor:pointer;font-family:var(--sans);
     transition:border-color .15s, background .15s, transform .1s;
-    display:inline-flex;align-items:center;gap:7px;
+    display:inline-flex;align-items:center;gap:7px;white-space:nowrap;
   }
   .btn:hover{border-color:var(--accent-dim);background:var(--bg-card);}
   .btn:active{transform:scale(0.97);}
@@ -194,6 +194,8 @@
 
   @media (max-width:560px){
     .app{padding:0 14px env(safe-area-inset-bottom);}
+    .brand-sub{display:none;}
+    .btn{padding:7px 10px;font-size:12.5px;gap:5px;}
     .word-display{font-size:clamp(26px,10vw,40px);}
     .controls{gap:6px;flex-wrap:nowrap;}
     .speed-control{gap:5px;padding:5px 8px;}
