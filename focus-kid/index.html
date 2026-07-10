@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>专注方格 · Schulte Grid</title>
+  <script type="module" crossorigin>(function(){const t=document.createElement("link").relList;if(t&&t.supports&&t.supports("modulepreload"))return;for(const i of document.querySelectorAll('link[rel="modulepreload"]'))a(i);new MutationObserver(i=>{for(const c of i)if(c.type==="childList")for(const m of c.addedNodes)m.tagName==="LINK"&&m.rel==="modulepreload"&&a(m)}).observe(document,{childList:!0,subtree:!0});function o(i){const c={};return i.integrity&&(c.integrity=i.integrity),i.referrerPolicy&&(c.referrerPolicy=i.referrerPolicy),i.crossOrigin==="use-credentials"?c.credentials="include":i.crossOrigin==="anonymous"?c.credentials="omit":c.credentials="same-origin",c}function a(i){if(i.ep)return;i.ep=!0;const c=o(i);fetch(i.href,c)}})();function w(e){const t=Array.from({length:e*e},(o,a)=>a+1);for(let o=t.length-1;o>0;o--){const a=Math.floor(Math.random()*(o+1));[t[o],t[a]]=[t[a],t[o]]}return t}const v="focuskid.v1",h={settings:{size:5,centerDot:!1},best:{}};function x(){try{const e=localStorage.getItem(v);if(!e)return structuredClone(h);const t=JSON.parse(e);return{settings:{...h.settings,...t.settings},best:t.best??{}}}catch{return structuredClone(h)}}function z(e){try{localStorage.setItem(v,JSON.stringify(e))}catch{}}let l=x();function S(){return l.settings}function L(e){l={...l,settings:{...l.settings,...e}},z(l)}function C(e){return l.best[e]??null}function A(e,t){const o=l.best[e];return o!==void 0&&o<=t?!1:(l={...l,best:{...l.best,[e]:t}},z(l),!0)}const s=e=>document.getElementById(e),r={appVersion:s("app-version"),brandHome:s("brand-home"),viewHome:s("view-home"),viewGame:s("view-game"),viewResult:s("view-result"),sizePicker:s("size-picker"),centerDotToggle:s("center-dot-toggle"),bestTime:s("best-time"),btnStart:s("btn-start"),hudTimer:s("hud-timer"),hudProgress:s("hud-progress"),btnQuit:s("btn-quit"),grid:s("grid"),centerDot:s("center-dot"),resultTitle:s("result-title"),resultTime:s("result-time"),resultRecord:s("result-record"),btnReplay:s("btn-replay"),btnChangeSize:s("btn-change-size")};r.appVersion.textContent="v1.0.0";const b=S(),n={size:b.size,values:[],next:1,startedAt:null,timerHandle:null};function u(e){r.viewHome.classList.toggle("active",e==="home"),r.viewGame.classList.toggle("active",e==="game"),r.viewResult.classList.toggle("active",e==="result")}function f(e){return`${(e/1e3).toFixed(1)}秒`}function d(){for(const e of r.sizePicker.querySelectorAll(".size-btn")){const t=Number(e.dataset.size);e.classList.toggle("active",t===n.size)}}function g(){const e=C(n.size);r.bestTime.textContent=e===null?"暂无记录":`最好成绩 ${n.size}×${n.size}: ${f(e)}`}r.sizePicker.addEventListener("click",e=>{const t=e.target.closest(".size-btn");t&&(n.size=Number(t.dataset.size),L({size:n.size}),d(),g())});r.centerDotToggle.checked=b.centerDot;r.centerDotToggle.addEventListener("change",()=>{L({centerDot:r.centerDotToggle.checked})});r.brandHome.addEventListener("click",()=>{p(),u("home"),d(),g()});function p(){n.timerHandle!==null&&(cancelAnimationFrame(n.timerHandle),n.timerHandle=null)}function y(){n.startedAt!==null&&(r.hudTimer.textContent=f(performance.now()-n.startedAt),n.timerHandle=requestAnimationFrame(y))}function E(){r.grid.style.setProperty("--n",String(n.size)),r.grid.innerHTML="";for(const e of n.values){const t=document.createElement("button");t.className="grid-cell",t.type="button",t.textContent=String(e),t.dataset.value=String(e),r.grid.appendChild(t)}}function T(){n.values=w(n.size),n.next=1,n.startedAt=null,r.hudTimer.textContent="0.0秒",r.hudProgress.textContent="找 1",r.centerDot.classList.toggle("show",b.centerDot),E(),u("game")}r.grid.addEventListener("click",e=>{const t=e.target.closest(".grid-cell");if(!t||t.classList.contains("found"))return;const o=Number(t.dataset.value);if(n.startedAt===null&&(n.startedAt=performance.now(),y()),o!==n.next){t.classList.remove("wrong"),t.offsetWidth,t.classList.add("wrong"),setTimeout(()=>t.classList.remove("wrong"),200);return}if(t.classList.add("found"),n.next++,n.next>n.size*n.size){P();return}r.hudProgress.textContent=`找 ${n.next}`});r.btnQuit.addEventListener("click",()=>{p(),u("home"),d(),g()});function P(){p();const e=performance.now()-(n.startedAt??performance.now());r.hudTimer.textContent=f(e);const t=A(n.size,e);r.resultTitle.textContent="完成!",r.resultTime.textContent=f(e),r.resultRecord.textContent=t?"新纪录!":"",u("result")}r.btnReplay.addEventListener("click",()=>{T()});r.btnChangeSize.addEventListener("click",()=>{u("home"),d(),g()});r.btnStart.addEventListener("click",()=>{T()});d();g();u("home");</script>
+  <style rel="stylesheet" crossorigin>:root{--bg: #002b36;--bg-raised: #073642;--bg-card: #0a3d4a;--ink: #93a1a1;--ink-dim: #839496;--ink-faint: #586e75;--accent: #cb4b16;--accent-dim: #8f3a14;--line: #0e4956;--good: #859900;--danger: #dc322f;--serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;--sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;--mono: "SF Mono", "Cascadia Code", Consolas, monospace}*{box-sizing:border-box}html,body{margin:0;padding:0;height:100%}body{background:radial-gradient(1200px 800px at 15% -10%,rgba(203,75,22,.06),transparent 60%),var(--bg);color:var(--ink);font-family:var(--sans);min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;touch-action:manipulation}.app{flex:1;display:flex;flex-direction:column;max-width:720px;margin:0 auto;width:100%;padding:env(safe-area-inset-top) 20px env(safe-area-inset-bottom)}.topbar{display:flex;align-items:center;justify-content:space-between;padding:22px 0 18px;border-bottom:1px solid var(--line);flex-shrink:0}.brand{display:flex;align-items:baseline;gap:10px}.brand-mark{font-family:var(--serif);font-size:22px;font-weight:600;letter-spacing:.02em;color:var(--ink);cursor:pointer;user-select:none}.brand-mark span{color:var(--accent)}.brand-ver{font-family:var(--mono);font-size:10px;color:var(--ink-faint);opacity:.7}.btn{appearance:none;border:1px solid var(--line);background:var(--bg-raised);color:var(--ink);padding:9px 16px;border-radius:8px;font-size:13.5px;cursor:pointer;font-family:var(--sans);transition:border-color .15s,background .15s,transform .1s;display:inline-flex;align-items:center;gap:7px;white-space:nowrap}.btn:hover{border-color:var(--accent-dim);background:var(--bg-card)}.btn:active{transform:scale(.97)}.btn-primary{background:var(--accent);border-color:var(--accent);color:#fdf6e3;font-weight:600}.btn-primary:hover{background:#e05a20;border-color:#e05a20}.btn-quiet{background:transparent;border-color:transparent;color:var(--ink-dim)}.btn-quiet:hover{color:var(--ink);background:var(--bg-raised)}.view{display:none;flex:1;flex-direction:column}.view.active{display:flex}.home-panel{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;padding:20px 0 60px;text-align:center}.field-label{font-size:13px;color:var(--ink-dim);letter-spacing:.04em}.size-picker{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}.size-btn{appearance:none;border:1px solid var(--line);background:var(--bg-raised);color:var(--ink);padding:10px 16px;border-radius:10px;font-size:15px;font-family:var(--mono);cursor:pointer;transition:border-color .15s,background .15s}.size-btn:hover{border-color:var(--accent-dim)}.size-btn.active{background:var(--accent);border-color:var(--accent);color:#fdf6e3;font-weight:600}.toggle-row{display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--ink-dim);cursor:pointer}.toggle-row input{width:18px;height:18px;accent-color:var(--accent)}.best-time{font-family:var(--mono);font-size:14px;color:var(--ink-faint)}.btn-start{padding:14px 44px;font-size:16px;border-radius:12px}.game-hud{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:18px 0}.hud-timer{font-family:var(--mono);font-size:22px;font-weight:600;color:var(--accent);min-width:70px}.hud-progress{font-size:14px;color:var(--ink-dim);flex:1;text-align:center}.grid-wrap{flex:1;display:flex;align-items:center;justify-content:center;position:relative;padding:10px 0 40px}.grid{--n: 5;container-type:inline-size;display:grid;grid-template-columns:repeat(var(--n),1fr);grid-template-rows:repeat(var(--n),1fr);gap:6px;width:min(100%,520px);aspect-ratio:1}.grid-cell{appearance:none;border:1px solid var(--line);background:var(--bg-raised);color:var(--ink);border-radius:8px;font-family:var(--mono);font-weight:600;font-size:clamp(16px,calc(42cqw / var(--n)),56px);padding:0;overflow:hidden;cursor:pointer;display:flex;align-items:center;justify-content:center;user-select:none;transition:background .1s,border-color .1s,transform .08s}.grid-cell:active{transform:scale(.94)}.grid-cell.found{background:transparent;border-color:var(--line);color:var(--ink-faint);opacity:.35;cursor:default}.grid-cell.wrong{border-color:var(--danger);background:#dc322f2e;animation:shake .2s}@keyframes shake{0%,to{transform:translate(0)}25%{transform:translate(-3px)}75%{transform:translate(3px)}}.center-dot{position:absolute;top:50%;left:50%;width:10px;height:10px;border-radius:50%;background:var(--accent);transform:translate(-50%,-50%);pointer-events:none;display:none;box-shadow:0 0 0 4px #cb4b1640}.center-dot.show{display:block}.result-panel{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;padding:20px 0 60px}.result-title{font-family:var(--serif);font-size:22px;font-weight:600;color:var(--ink)}.result-time{font-family:var(--mono);font-size:42px;font-weight:700;color:var(--accent)}.result-record{font-size:14px;color:var(--good);min-height:20px}.result-actions{display:flex;gap:10px;margin-top:10px}@media(max-width:560px){.app{padding:env(safe-area-inset-top) 14px env(safe-area-inset-bottom)}.grid{width:100%}}</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="topbar">
+    <div class="brand" id="brand-home">
+      <div class="brand-mark">专注<span>方格</span></div>
+      <span class="brand-ver" id="app-version"></span>
+    </div>
+  </div>
+
+  <!-- HOME -->
+  <div id="view-home" class="view">
+    <div class="home-panel">
+      <div class="field-label">格子尺寸</div>
+      <div class="size-picker" id="size-picker">
+        <button class="size-btn" data-size="3">3×3</button>
+        <button class="size-btn" data-size="4">4×4</button>
+        <button class="size-btn" data-size="5">5×5</button>
+        <button class="size-btn" data-size="6">6×6</button>
+        <button class="size-btn" data-size="7">7×7</button>
+      </div>
+
+      <label class="toggle-row" for="center-dot-toggle">
+        <span>中心注视点(用余光找数字)</span>
+        <input type="checkbox" id="center-dot-toggle">
+      </label>
+
+      <div class="best-time" id="best-time">暂无记录</div>
+
+      <button class="btn btn-primary btn-start" id="btn-start">开始</button>
+    </div>
+  </div>
+
+  <!-- GAME -->
+  <div id="view-game" class="view">
+    <div class="game-hud">
+      <div class="hud-timer" id="hud-timer">0.0秒</div>
+      <div class="hud-progress" id="hud-progress">找 1</div>
+      <button class="btn btn-quiet" id="btn-quit">退出</button>
+    </div>
+    <div class="grid-wrap">
+      <div class="grid" id="grid"></div>
+      <div class="center-dot" id="center-dot"></div>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div id="view-result" class="view">
+    <div class="result-panel">
+      <div class="result-title" id="result-title">完成!</div>
+      <div class="result-time" id="result-time">0.0秒</div>
+      <div class="result-record" id="result-record"></div>
+      <div class="result-actions">
+        <button class="btn btn-primary" id="btn-replay">再来一局</button>
+        <button class="btn btn-quiet" id="btn-change-size">换尺寸</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
